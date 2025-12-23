@@ -1,0 +1,5 @@
+# IDS test fixture
+U+6728	木	木
+U+6797	林	⿰木木
+U+68EE	森	⿱木林
+U+4E00	一	一
