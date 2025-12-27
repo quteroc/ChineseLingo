@@ -108,7 +108,7 @@ public class SentenceFilter {
             
             // Accept if ratio meets threshold
             if (knownRatio >= threshold) {
-                candidates.add(new SentenceCandidate(sentenceId, tokens.length));
+                candidates.add(new SentenceCandidate(sentenceId, totalChars));
             }
         }
         
