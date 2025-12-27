@@ -1,12 +1,14 @@
 package com.chineselingo.data;
 
+import com.chineselingo.sentence.InvertedIndex;
+import com.chineselingo.sentence.SentenceStore;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 
 /**
  * Immutable container for all parsed data structures.
- * Holds character definitions, frequencies, and component relationships.
+ * Holds character definitions, frequencies, component relationships, and sentences.
  */
 public class StaticData {
     private final CharIdMapper charIdMapper;
@@ -14,18 +16,24 @@ public class StaticData {
     private final Int2IntOpenHashMap frequencies;
     private final Int2ObjectOpenHashMap<IntArrayList> componentToCompounds;
     private final Int2ObjectOpenHashMap<IntArrayList> compoundToComponents;
+    private final SentenceStore sentenceStore;
+    private final InvertedIndex sentenceIndex;
 
     public StaticData(
             CharIdMapper charIdMapper,
             Int2ObjectOpenHashMap<String> definitions,
             Int2IntOpenHashMap frequencies,
             Int2ObjectOpenHashMap<IntArrayList> componentToCompounds,
-            Int2ObjectOpenHashMap<IntArrayList> compoundToComponents) {
+            Int2ObjectOpenHashMap<IntArrayList> compoundToComponents,
+            SentenceStore sentenceStore,
+            InvertedIndex sentenceIndex) {
         this.charIdMapper = charIdMapper;
         this.definitions = definitions;
         this.frequencies = frequencies;
         this.componentToCompounds = componentToCompounds;
         this.compoundToComponents = compoundToComponents;
+        this.sentenceStore = sentenceStore;
+        this.sentenceIndex = sentenceIndex;
     }
 
     public CharIdMapper getCharIdMapper() {
@@ -82,5 +90,21 @@ public class StaticData {
      */
     public IntArrayList getComponents(int compoundId) {
         return compoundToComponents.get(compoundId);
+    }
+
+    /**
+     * Gets the sentence store containing all parsed sentences.
+     * @return the sentence store, or null if not loaded
+     */
+    public SentenceStore getSentenceStore() {
+        return sentenceStore;
+    }
+
+    /**
+     * Gets the inverted index for sentence lookup by character.
+     * @return the inverted index, or null if not loaded
+     */
+    public InvertedIndex getSentenceIndex() {
+        return sentenceIndex;
     }
 }
