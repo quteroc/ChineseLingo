@@ -68,12 +68,12 @@ public class UserState {
     }
 
     /**
-     * Gets the BitSet of known characters.
-     * Note: Callers should not modify the returned BitSet.
-     * @return the BitSet of known character IDs
+     * Gets a copy of the BitSet of known characters.
+     * Returns a defensive copy to prevent external modification.
+     * @return a clone of the BitSet of known character IDs
      */
     public BitSet getKnownChars() {
-        return knownChars;
+        return (BitSet) knownChars.clone();
     }
 
     /**

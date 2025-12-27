@@ -6,6 +6,7 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Comparator;
 import java.util.List;
 
@@ -77,10 +78,13 @@ public class RecommendationEngine {
         // Collect all learnable candidates
         IntOpenHashSet candidates = new IntOpenHashSet();
         
+        // Get known characters once to avoid multiple clones
+        BitSet knownChars = userState.getKnownChars();
+        
         // Iterate through known characters and find compounds that contain them
-        for (int knownCharId = userState.getKnownChars().nextSetBit(0); 
+        for (int knownCharId = knownChars.nextSetBit(0); 
              knownCharId >= 0; 
-             knownCharId = userState.getKnownChars().nextSetBit(knownCharId + 1)) {
+             knownCharId = knownChars.nextSetBit(knownCharId + 1)) {
             
             IntArrayList compounds = graphManager.getCompoundsForComponent(knownCharId);
             if (compounds != null) {
@@ -106,7 +110,7 @@ public class RecommendationEngine {
         }
 
         candidateList.sort(Comparator
-            .comparingInt((CharFrequency cf) -> cf.frequency)
+            .<CharFrequency>comparingInt(cf -> cf.frequency)
             .reversed()
             .thenComparingInt(cf -> cf.charId));
 
