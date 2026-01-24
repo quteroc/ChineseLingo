@@ -21,6 +21,17 @@ public class UserState {
     }
 
     /**
+     * Creates a UserState.
+     */
+    UserState(BitSet bs, Int2ObjectOpenHashMap<ReviewHistory> rh) {
+        this.knownChars = bs == null ? new BitSet() : bs;
+        this.reviewHistory = rh == null ? new Int2ObjectOpenHashMap<>() : rh;
+    }
+
+    public static UserState  restore (BitSet bs, Int2ObjectOpenHashMap<ReviewHistory> rh) {
+        return new UserState(bs, rh) ;
+    }
+    /**
      * Checks if a character is known by the user.
      * @param charId the character ID
      * @return true if the character is known
@@ -76,6 +87,9 @@ public class UserState {
         return (BitSet) knownChars.clone();
     }
 
+    public Int2ObjectOpenHashMap<ReviewHistory> getReviewHistoryMap() {
+        return reviewHistory;
+    }
     /**
      * Container for per-character review statistics.
      */
@@ -91,6 +105,12 @@ public class UserState {
             this.views = 0;
             this.successes = 0;
             this.lastReviewedEpochSeconds = 0;
+        }
+
+        public ReviewHistory(int views, int successes, long lastReviewedEpochSeconds) {
+            this.views = views;
+            this.successes = successes;
+            this.lastReviewedEpochSeconds = lastReviewedEpochSeconds;
         }
 
         /**
