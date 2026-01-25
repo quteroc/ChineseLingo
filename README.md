@@ -21,7 +21,7 @@ Aplikacja jest w pełni samodzielna. Nie wymaga instalowania niczego poza samą 
 
 1. **Start:** Aplikacja wczytuje pliki tekstowe (słownik i teksty chińskie) do pamięci RAM.  
 2. **Działanie:** Wszystkie operacje dzieją się w pamięci komputera (szybko i prosto).  
-3. **Zapis:** Postępy użytkownika zapisywane są do małego pliku tekstowego (np. `postepy.json`) na dysku.
+3. **Zapis:** Postępy użytkownika (lista znaków, które już zna) mogą być zapisane do małego pliku JSON (np. `postepy.json`) na dysku.
 
    ## **3\. Wykorzystane dane (Pliki)**
 
@@ -84,4 +84,21 @@ Aplikacja korzysta z 3 gotowych plików tekstowych:
 * **WNF-05:** Zużycie pamięci RAM przez aplikację nie powinno przekraczać 500 MB (biorąc pod uwagę rozmiar słowników).
 
 ---
+
+## **8. Uwagi Dotyczące Wyświetlania (Windows)**
+
+Jeśli używasz terminala Windows (PowerShell) i zamiast chińskich znaków widzisz znaki zapytania (`?`) lub prostokąty, wykonaj poniższe kroki:
+
+### **1. Ustawienie Kodowania UTF-8**
+Przed uruchomieniem aplikacji w PowerShell wpisz:
+```powershell
+chcp 65001
+$env:JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"
+```
+
+### **2. Zmiana Czcionki w Terminalu**
+Upewnij się, że Twój terminal używa czcionki obsługującej znaki chińskie:
+1. Wejdź w **Ustawienia** VS Code (`Ctrl+,`).
+2. Wyszukaj `Terminal › Integrated: Font Family`.
+3. Dodaj `'MS Gothic'` lub `'SimSun'` do listy czcionek (np. `'Cascadia Code', 'MS Gothic', monospace`).
 

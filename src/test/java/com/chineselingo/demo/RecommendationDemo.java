@@ -15,6 +15,12 @@ import java.nio.file.Paths;
 /**
  * Demonstration of the WP-02 recommendation system.
  * Shows how the system recommends characters based on known components.
+ * 
+ * NOTE FOR WINDOWS USERS:
+ * If Chinese characters appear as '?' or boxes in the terminal, run:
+ * chcp 65001
+ * $env:JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"
+ * Also ensure your terminal font supports Chinese (e.g., 'MS Gothic' or 'SimSun').
  */
 public class RecommendationDemo {
     
