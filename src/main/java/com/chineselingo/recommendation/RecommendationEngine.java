@@ -109,6 +109,12 @@ public class RecommendationEngine {
             candidateList.add(new CharFrequency(candidateId, frequency));
         }
 
+        if(candidateList.isEmpty()) {
+            int candidateId= graphManager.getMostFrequent();
+            int frequency = graphManager.getFrequency(candidateId);
+            candidateList.add(new CharFrequency(candidateId, frequency));
+        }
+
         candidateList.sort(Comparator
             .<CharFrequency>comparingInt(cf -> cf.frequency)
             .reversed()

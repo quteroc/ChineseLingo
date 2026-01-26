@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Instant;
 
 /**
  * Parser for CC-CEDICT format dictionary files.
@@ -32,7 +33,7 @@ public class CEDICTParser {
      */
     public void parse(Path filePath, CharIdMapper charIdMapper, Int2ObjectOpenHashMap<String> definitions) 
             throws IOException {
-        logger.info("Parsing CEDICT file: {}", filePath);
+        logger.info("Parsing CEDICT file: {}. Start:{}", filePath, Instant.now().toString());
         int lineCount = 0;
         int entryCount = 0;
 
@@ -55,7 +56,7 @@ public class CEDICTParser {
             }
         }
 
-        logger.info("Parsed {} entries from {} lines", entryCount, lineCount);
+        logger.info("Parsed {} entries from {} lines. End: {}", entryCount, lineCount, Instant.now().toString());
     }
 
     private void parseLine(String line, CharIdMapper charIdMapper, Int2ObjectOpenHashMap<String> definitions) {

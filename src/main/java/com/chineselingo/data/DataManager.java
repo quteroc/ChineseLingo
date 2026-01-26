@@ -3,6 +3,9 @@ package com.chineselingo.data;
 import com.chineselingo.parser.CEDICTParser;
 import com.chineselingo.parser.IDSParser;
 import com.chineselingo.parser.SUBTLEXParser;
+import com.chineselingo.sentence.InvertedIndex;
+import com.chineselingo.sentence.SentenceParser;
+import com.chineselingo.sentence.SentenceStore;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
@@ -13,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
 
 /**
  * Facade for data loading and parsing operations.
@@ -25,6 +29,7 @@ public class DataManager {
     private final CEDICTParser cedictParser;
     private final SUBTLEXParser subtlexParser;
     private final IDSParser idsParser;
+    private final SentenceParser sentenceParser;
 
     /**
      * Creates a DataManager with the specified data directory.
@@ -35,6 +40,7 @@ public class DataManager {
         this.cedictParser = new CEDICTParser();
         this.subtlexParser = new SUBTLEXParser();
         this.idsParser = new IDSParser();
+        this.sentenceParser = new SentenceParser();
     }
 
     /**
@@ -51,12 +57,13 @@ public class DataManager {
      * - cedict_ts.u8 (or cedict.txt)
      * - subtlex.txt (or frequency.txt)
      * - ids.txt
+     * - sentences.tsv (or sentences.txt) [optional]
      * 
      * @return StaticData containing all parsed structures
      * @throws IOException if any file cannot be read or parsed
      */
     public StaticData loadData() throws IOException {
-        logger.info("Loading data from directory: {}", dataDirectory);
+        logger.info("Loading data from directory: {}. Start: {}", dataDirectory, Instant.now().toString());
 
         if (!Files.exists(dataDirectory) || !Files.isDirectory(dataDirectory)) {
             throw new IOException("Data directory does not exist: " + dataDirectory);
@@ -93,13 +100,26 @@ public class DataManager {
             logger.warn("IDS file not found in {}", dataDirectory);
         }
 
-        logger.info("Data loading complete. Total unique characters: {}", charIdMapper.size());
+        // Load sentences (optional)
+        SentenceStore sentenceStore = new SentenceStore();
+        InvertedIndex sentenceIndex = new InvertedIndex();
+        
+        Path sentencePath = findFile(dataDirectory, "sentences.tsv", "sentences.txt", "tatoeba.tsv");
+        if (sentencePath != null) {
+            sentenceParser.parse(sentencePath, charIdMapper, sentenceStore, sentenceIndex);
+        } else {
+            logger.info("Sentence file not found in {} (optional)", dataDirectory);
+        }
+
+        logger.info("Data loading complete. Total unique characters: {}. End:{}", charIdMapper.size(), Instant.now().toString());
         logger.info("  Definitions: {}", definitions.size());
         logger.info("  Frequencies: {}", frequencies.size());
         logger.info("  Component relationships: {}", componentToCompounds.size());
+        logger.info("  Sentences: {}", sentenceStore.size());
 
         return new StaticData(charIdMapper, definitions, frequencies, 
-                            componentToCompounds, compoundToComponents);
+                            componentToCompounds, compoundToComponents,
+                            sentenceStore, sentenceIndex);
     }
 
     /**

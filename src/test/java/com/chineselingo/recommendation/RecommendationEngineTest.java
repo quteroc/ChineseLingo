@@ -56,7 +56,7 @@ class RecommendationEngineTest {
         
         int recommendation = strictEngine.recommendNext(userState);
         
-        assertEquals(-1, recommendation, "Should return -1 when no characters are known");
+        assertEquals(3, recommendation, "Should return 3 as most frequent");
     }
 
     @Test
