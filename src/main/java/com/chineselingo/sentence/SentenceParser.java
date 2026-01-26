@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Instant;
 
 /**
  * Parser for Tatoeba-style sentence files.
@@ -48,7 +49,7 @@ public class SentenceParser {
      */
     public void parse(Path filePath, CharIdMapper charIdMapper, 
                      SentenceStore store, InvertedIndex index) throws IOException {
-        logger.info("Parsing sentence file: {}", filePath);
+        logger.info("Parsing sentence file: {}. Start:{}", filePath, Instant.now().toString());
         int lineCount = 0;
         int acceptedCount = 0;
         int filteredByLang = 0;
@@ -99,7 +100,7 @@ public class SentenceParser {
             }
         }
 
-        logger.info("Parsed {} sentences from {} lines", acceptedCount, lineCount);
+        logger.info("Parsed {} sentences from {} lines. End:{}", acceptedCount, lineCount, Instant.now().toString());
         logger.info("  Filtered by language: {}", filteredByLang);
         logger.info("  Filtered by length: {}", filteredByLength);
     }

@@ -2,6 +2,7 @@ package com.chineselingo.data;
 
 import com.chineselingo.sentence.InvertedIndex;
 import com.chineselingo.sentence.SentenceStore;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
@@ -74,6 +75,18 @@ public class StaticData {
         return frequencies.get(charId);
     }
 
+    public int getMostFrequent() {
+        int maxKey = 0;
+        int maxValue = Integer.MIN_VALUE;
+
+        for (Int2IntMap.Entry entry : frequencies.int2IntEntrySet()) {
+            if (entry.getIntValue() > maxValue) {
+                maxValue = entry.getIntValue();
+                maxKey = entry.getIntKey();
+            }
+        }
+        return maxKey;
+    }
     /**
      * Gets the list of compound character IDs that contain the given component.
      * @param componentId the component character ID

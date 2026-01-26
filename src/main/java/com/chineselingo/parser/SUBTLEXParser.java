@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Instant;
 
 /**
  * Parser for SUBTLEX frequency files.
@@ -34,7 +35,7 @@ public class SUBTLEXParser {
      */
     public void parse(Path filePath, CharIdMapper charIdMapper, Int2IntOpenHashMap frequencies) 
             throws IOException {
-        logger.info("Parsing SUBTLEX file: {}", filePath);
+        logger.info("Parsing SUBTLEX file: {}. Start:{}", filePath, Instant.now().toString());
         int lineCount = 0;
         int entryCount = 0;
         boolean firstLine = true;
@@ -67,7 +68,7 @@ public class SUBTLEXParser {
             }
         }
 
-        logger.info("Parsed {} frequency entries from {} lines", entryCount, lineCount);
+        logger.info("Parsed {} frequency entries from {} lines. End:{}", entryCount, lineCount, Instant.now().toString());
     }
 
     private boolean looksLikeHeader(String line) {

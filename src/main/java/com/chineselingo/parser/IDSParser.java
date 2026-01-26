@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Instant;
 
 /**
  * Parser for IDS-UCS (Ideographic Description Sequence) files.
@@ -36,7 +37,7 @@ public class IDSParser {
                      Int2ObjectOpenHashMap<IntArrayList> componentToCompounds,
                      Int2ObjectOpenHashMap<IntArrayList> compoundToComponents) 
             throws IOException {
-        logger.info("Parsing IDS file: {}", filePath);
+        logger.info("Parsing IDS file: {}. Start:{}", filePath, Instant.now().toString());
         int lineCount = 0;
         int entryCount = 0;
 
@@ -60,7 +61,7 @@ public class IDSParser {
             }
         }
 
-        logger.info("Parsed {} IDS entries from {} lines", entryCount, lineCount);
+        logger.info("Parsed {} IDS entries from {} lines. End:{}", entryCount, lineCount, Instant.now().toString());
     }
 
     private void parseLine(String line, CharIdMapper charIdMapper,

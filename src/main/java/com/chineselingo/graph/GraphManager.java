@@ -63,6 +63,10 @@ public class GraphManager {
         return staticData.getFrequency(charId);
     }
 
+    public int getMostFrequent() {
+        return staticData.getMostFrequent();
+    }
+
     /**
      * Gets the underlying StaticData (for advanced use cases).
      * Note: Callers should treat the returned data as immutable.

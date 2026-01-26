@@ -29,7 +29,7 @@ public final class UserStateMapper {
 
     public static UserState fromDto(UserStateDto dto) {
         if (dto == null) {
-            return null;
+            return new UserState();
         }
 
         BitSet knownChars = dto.getKnownChars() != null ? listToBitSet(dto.getKnownChars()) : new BitSet();

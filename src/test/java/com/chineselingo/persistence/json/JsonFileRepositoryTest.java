@@ -35,11 +35,10 @@ class JsonFileRepositoryTest {
         UserState original = new UserState();
         long now = Instant.now().getEpochSecond();
 
-        original.recordReview(10, true, now);
-        original.recordReview(10, false, now + 5);
-        original.recordReview(42, true, now + 10);
-        original.markKnown(10);
-        original.markKnown(42);
+        original.recordReview(26408, true, now);
+        original.recordReview(26408, false, now + 5);
+        original.recordReview(26408, true, now + 10);
+        original.markKnown(26408);
 
         // when
         repository.save(UserStateMapper.toDto(original));
@@ -51,24 +50,18 @@ class JsonFileRepositoryTest {
         assertNotNull(restored);
 
         // --- knownChars ---
-        assertTrue(restored.getKnownChars().get(10));
-        assertTrue(restored.getKnownChars().get(42));
+        assertTrue(restored.getKnownChars().get(26408));
+        assertFalse(restored.getKnownChars().get(42));
 
-        // --- reviewHistory: charId=10 ---
-        UserState.ReviewHistory h10 =
-                restored.getReviewHistoryMap().get(10);
-
-        assertNotNull(h10);
-        assertEquals(2, h10.getViews());
-        assertEquals(1, h10.getSuccesses());
+        // --- reviewHistory: charId=26408 ---
+        UserState.ReviewHistory h26408 = restored.getReviewHistoryMap().get(26408);
+        assertNotNull(h26408);
+        assertEquals(3, h26408.getViews());
+        assertEquals(2, h26408.getSuccesses());
 
         // --- reviewHistory: charId=42 ---
-        UserState.ReviewHistory h42 =
-                restored.getReviewHistoryMap().get(42);
-
-        assertNotNull(h42);
-        assertEquals(1, h42.getViews());
-        assertEquals(1, h42.getSuccesses());
+        UserState.ReviewHistory h42 = restored.getReviewHistoryMap().get(42);
+        assertNull(h42);
     }
 
     @Test

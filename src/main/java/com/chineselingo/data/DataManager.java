@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
 
 /**
  * Facade for data loading and parsing operations.
@@ -62,7 +63,7 @@ public class DataManager {
      * @throws IOException if any file cannot be read or parsed
      */
     public StaticData loadData() throws IOException {
-        logger.info("Loading data from directory: {}", dataDirectory);
+        logger.info("Loading data from directory: {}. Start: {}", dataDirectory, Instant.now().toString());
 
         if (!Files.exists(dataDirectory) || !Files.isDirectory(dataDirectory)) {
             throw new IOException("Data directory does not exist: " + dataDirectory);
@@ -110,7 +111,7 @@ public class DataManager {
             logger.info("Sentence file not found in {} (optional)", dataDirectory);
         }
 
-        logger.info("Data loading complete. Total unique characters: {}", charIdMapper.size());
+        logger.info("Data loading complete. Total unique characters: {}. End:{}", charIdMapper.size(), Instant.now().toString());
         logger.info("  Definitions: {}", definitions.size());
         logger.info("  Frequencies: {}", frequencies.size());
         logger.info("  Component relationships: {}", componentToCompounds.size());
